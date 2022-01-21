@@ -19,6 +19,7 @@ class HomePage  extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   bool wynik=false;
+  String numer="";
 
   List<step.Step> steps = [
     step.Step(
@@ -138,6 +139,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               borderRadius: BorderRadius.circular(50),
             ),
             child: TextField(
+              onChanged: (text){
+                numer=text;
+              },
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderSide: BorderSide.none),
                 hintText: "np. #123456789"),
@@ -147,7 +151,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
             GestureDetector(
               onTap: (){
-                setState(() {wynik=true;});
+                setState(() {wynik=numer!="";});
               },
               child: Icon(
                 Icons.search,
