@@ -1,8 +1,9 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:vertical_stepper/vertical_stepper.dart';
 import 'package:vertical_stepper/vertical_stepper.dart' as step;
 import 'package:lottie/lottie.dart';
-// @dart=2.9
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 void main() => runApp(MaterialApp(
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   bool wynik=false;
   String numer="";
+
 
   List<step.Step> steps = [
     step.Step(
@@ -151,8 +153,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
             GestureDetector(
               onTap: (){
-                setState(() {wynik=numer!="";});
+                setState(() {
+                  //wynik=numer!="";
+                  if (numer.length==10 && numer[0]=="#" && double.tryParse(numer.substring(1))!=null)
+                    wynik=true;
+                  else{
+                    wynik=false;
+                    Fluttertoast.showToast(
+                      msg: "Zły format numeru paczki. Przykładowy numer: # + 9cio liczbowy kod",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                  }
+                });
               },
+
               child: Icon(
                 Icons.search,
                 size:20,
@@ -189,7 +207,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         )
             :SizedBox(),
         SizedBox(
-          height: 5,
+
         ),
         wynik
         ? Padding(
@@ -199,10 +217,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             dashLength: 2,
           ),
         )
-            : Transform(
-              transform: Matrix4.translationValues(0, 0, 0),
-              child: Lottie.network(
-              "https://assets2.lottiefiles.com/packages/lf20_t24tpvcu.json"),
+            : Center(
+              child: Transform(
+                transform: Matrix4.translationValues(0, 0, 0),
+                child: Lottie.network(
+                "https://assets2.lottiefiles.com/packages/lf20_t24tpvcu.json", height:324,),
+              ),
             )
       ],
     );
